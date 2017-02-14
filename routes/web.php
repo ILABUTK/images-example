@@ -1,5 +1,6 @@
 <?php
 
+use App\Events\ImageUploaded;
 use App\UploadedImage;
 use Illuminate\Http\Request;
 
@@ -15,9 +16,14 @@ use Illuminate\Http\Request;
 */
 
 Route::get('/', function () {
-  $images = UploadedImage::orderBy('created_at','desc')->get();
-    return view('welcome', ['images' => $images]);
+  return view('welcome');
 });
+
+Route::get('/images', function () {
+  $images = UploadedImage::orderBy('created_at','desc')->get();
+  return response()->json($images);
+});
+
 
 Route::post('/image-upload', function (Request $request) {
     $path = $request->file('file')->store('public/images');
@@ -25,5 +31,6 @@ Route::post('/image-upload', function (Request $request) {
     $image = new UploadedImage;
     $image->path = $url;
     $image->save();
+    event(new ImageUploaded($image));
     return response(['url' => $url]);
 });

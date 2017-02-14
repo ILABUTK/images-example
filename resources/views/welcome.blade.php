@@ -10,26 +10,22 @@
         <link rel="stylesheet" type="text/css" href="{{asset('css/dropzone.css')}}">
         <link rel="stylesheet" type="text/css" href="{{asset('css/app.css')}}">
         <link rel="stylesheet" type="text/css" href="{{asset('css/aside.css')}}">
+    <script>
+        window.Laravel = {!! json_encode([
+            'csrfToken' => csrf_token(),
+        ]) !!};
+    </script>        
     </head>
     <body>
+    <div id="app">
         <form action="/image-upload" class="dropzone" id="my-dropzone">
             {{ csrf_field() }}
         </form>
-        <div class="columns files is-multiline">
-@foreach ($images as $image)
-        <div class="column is-6-tablet is-3-desktop">
-          <a class="file">
-            <div class="image">
-                  <img src="{{ $image->path }}" alt="Image">
-            </div>
-            <div class="name">swimmin.jpeg</div>
-            <div class="timestamp">2 hours ago</div>
-          </a>
-        </div>  
-@endforeach                 
-        </div>
+        <image-gallery ref="gallery"></image-gallery>        
+    </div>
+<script type="text/javascript" src="{{asset('js/dropzone.js')}}"></script>    
 <script type="text/javascript" src="{{asset('js/app.js')}}"></script>        
-<script type="text/javascript" src="{{asset('js/dropzone.js')}}"></script>
+
 <script type="text/javascript">
 Dropzone.options.myDropzone = {
   paramName: "file", // The name that will be used to transfer the file
@@ -38,7 +34,8 @@ Dropzone.options.myDropzone = {
     accept: function(file, done) {
       done();
   }
-};   
+};
+
 </script>
     </body>
 </html>
