@@ -26,11 +26,17 @@ Route::get('/images', function () {
 
 
 Route::post('/image-upload', function (Request $request) {
-    $path = $request->file('file')->store('public/images');
-    $url = Storage::url($path);
-    $image = new UploadedImage;
-    $image->path = $url;
-    $image->save();
-    event(new ImageUploaded($image));
-    return response(['url' => $url]);
+  $uploadFile = $request->file('file');
+  $fullName = $uploadFile->getClientOriginalName();
+
+  $path = $uploadFile->store('public/images');
+  $url = Storage::url($path);
+
+  $image = new UploadedImage;
+  $image->path = $url;
+  $image->name = $fullName;
+  $image->preview_path = $url;
+  $image->save();
+  event(new ImageUploaded($image));
+  return response('OK');
 });
