@@ -12097,6 +12097,13 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
 
 
 /* harmony default export */ __webpack_exports__["default"] = {
@@ -12104,8 +12111,20 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
   data: function data() {
     return {
       images: [],
-      largeImage: null
+      largeImage: null,
+      butt_text: 'Load more images ...',
+      button_disabled: false,
+      show_button: false
     };
+  },
+
+  computed: {
+    lastID: function lastID() {
+      var oldestImage = window._.minBy(this.images, function (o) {
+        return o.id;
+      });
+      if (oldestImage) return oldestImage.id;else return 1E20;
+    }
   },
   mounted: function mounted() {
     var _this = this;
@@ -12126,6 +12145,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         400: 1
       }
     });
+    setTimeout(function () {
+      _this.show_button = true;
+    }, 1000);
   },
   updated: function updated() {
     window.Macy.onImageLoad(null, function () {
@@ -12135,16 +12157,22 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
   methods: {
     addImage: function addImage(image) {
-      var _this2 = this;
-
-      // this.images.unshift(image);
+      this.images.unshift(image);
       //retrieve data with updated time
-      window.axios.get('/images').then(function (response) {
-        return _this2.images = response.data;
-      });
+      // window.axios.get('/images').then(response => this.images = response.data); 
     },
     showLargeImage: function showLargeImage(image) {
       this.largeImage = image;
+    },
+    loadMoreData: function loadMoreData() {
+      var _this2 = this;
+
+      window.axios.get('/images', { params: { lastID: this.lastID } }).then(function (response) {
+        if (response.data.length > 0) _this2.images.push.apply(_this2.images, response.data);else {
+          _this2.butt_text = 'No more images :)';
+          _this2.button_disabled = true;
+        }
+      });
     }
   }
 };
@@ -37145,7 +37173,31 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
         _vm.largeImage = null
       }
     }
-  })])])
+  })]), _vm._v(" "), _c('div', {
+    directives: [{
+      name: "show",
+      rawName: "v-show",
+      value: (_vm.show_button),
+      expression: "show_button"
+    }],
+    staticClass: "columns",
+    staticStyle: {
+      "padding-top": "40px",
+      "padding-bottom": "30px"
+    },
+    on: {
+      "click": function($event) {
+        _vm.loadMoreData()
+      }
+    }
+  }, [_c('div', {
+    staticClass: "column is-half is-offset-one-quarter "
+  }, [_c('a', {
+    staticClass: "button is-primary is-fullwidth",
+    class: {
+      'is-disabled': _vm.button_disabled
+    }
+  }, [_vm._v(_vm._s(_vm.butt_text))])])])])
 },staticRenderFns: []}
 module.exports.render._withStripped = true
 if (false) {

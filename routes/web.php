@@ -19,9 +19,14 @@ Route::get('/', function () {
   return view('welcome');
 });
 
-Route::get('/images', function () {
-  $images = UploadedImage::orderBy('created_at','desc')->get();
-  return response()->json($images);
+Route::get('/images', function (Request $request) {
+  if($request->has('lastID')){
+    $images = UploadedImage::orderBy('id','desc')->where('id', '<',  $request->get('lastID'))->take(15)->get();
+    return response()->json($images);    
+  } else {
+    $images = UploadedImage::orderBy('id','desc')->take(15)->get();
+    return response()->json($images);    
+  }
 });
 
 
