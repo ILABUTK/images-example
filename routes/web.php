@@ -40,7 +40,7 @@ Route::post('/image-upload', function (Request $request) {
   // resize only the width of the image
   $img->resize(320, null, function ($constraint) {
         $constraint->aspectRatio();
-    })->encode('jpg');
+  })->encode('jpg');
 
   // finally we save the image as a new file
   Storage::put('public/images/'.$filename, $img);

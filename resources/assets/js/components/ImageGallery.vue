@@ -1,12 +1,11 @@
 <template>
-<!-- class="columns files is-mobile is-multiline" -->
-<!-- class="column is-6-mobile is-4-tablet is-3-desktop is-2-widescreen"  -->
+<div>
   <div id="macy-container" name="image" is="transition-group">
       <div v-for="image in images" :key="image.id">
       <div class="card">
         <a class="file">
           <figure class="image">
-              <img :src="image.preview_path" :alt=" image.name ">
+              <img :src="image.preview_path" :alt=" image.name " @click="showLargeImage(image)">
           </figure>    
           <div class="name"> {{image.name}} </div>
           <div class="timestamp"> {{image.human_time}} </div>
@@ -14,6 +13,19 @@
       </div>
       </div>                
   </div>
+
+  <div id="view-large" class="modal" :class="{'is-active': largeImage != null }">
+    <div class="modal-background" @click="largeImage = null"></div>
+    <div class="modal-content">
+      <p class="image">
+        <img :src="largeImage? largeImage.path : ''">
+      </p>
+    </div>
+    <button class="modal-close" @click="largeImage = null"></button>
+  </div>
+
+</div>
+
 </template>
 
 <script>
@@ -23,6 +35,7 @@ export default {
   data(){
     return {
       images : [],
+      largeImage: null,
     };
   },
   mounted(){
@@ -42,7 +55,7 @@ export default {
     });   
   },
   updated(){
-    window.Macy.onImageLoad(function () {
+    window.Macy.onImageLoad(null, function () {
       window.Macy.recalculate();
     });   
   },
@@ -51,6 +64,9 @@ export default {
       // this.images.unshift(image);
       //retrieve data with updated time
       window.axios.get('/images').then(response => this.images = response.data); 
+    },
+    showLargeImage(image){
+      this.largeImage = image;
     }
   }
 }

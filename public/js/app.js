@@ -12085,13 +12085,26 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 /* harmony default export */ __webpack_exports__["default"] = {
   name: 'image-gallery',
   data: function data() {
     return {
-      images: []
+      images: [],
+      largeImage: null
     };
   },
   mounted: function mounted() {
@@ -12115,7 +12128,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     });
   },
   updated: function updated() {
-    window.Macy.onImageLoad(function () {
+    window.Macy.onImageLoad(null, function () {
       window.Macy.recalculate();
     });
   },
@@ -12129,6 +12142,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
       window.axios.get('/images').then(function (response) {
         return _this2.images = response.data;
       });
+    },
+    showLargeImage: function showLargeImage(image) {
+      this.largeImage = image;
     }
   }
 };
@@ -37069,7 +37085,7 @@ module.exports = function normalizeComponent (
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
-  return _c("transition-group", {
+  return _c('div', [_c("transition-group", {
     tag: "div",
     attrs: {
       "id": "macy-container",
@@ -37088,13 +37104,48 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       attrs: {
         "src": image.preview_path,
         "alt": image.name
+      },
+      on: {
+        "click": function($event) {
+          _vm.showLargeImage(image)
+        }
       }
     })]), _vm._v(" "), _c('div', {
       staticClass: "name"
     }, [_vm._v(" " + _vm._s(image.name) + " ")]), _vm._v(" "), _c('div', {
       staticClass: "timestamp"
     }, [_vm._v(" " + _vm._s(image.human_time) + " ")])])])])
-  }))
+  })), _vm._v(" "), _c('div', {
+    staticClass: "modal",
+    class: {
+      'is-active': _vm.largeImage != null
+    },
+    attrs: {
+      "id": "view-large"
+    }
+  }, [_c('div', {
+    staticClass: "modal-background",
+    on: {
+      "click": function($event) {
+        _vm.largeImage = null
+      }
+    }
+  }), _vm._v(" "), _c('div', {
+    staticClass: "modal-content"
+  }, [_c('p', {
+    staticClass: "image"
+  }, [_c('img', {
+    attrs: {
+      "src": _vm.largeImage ? _vm.largeImage.path : ''
+    }
+  })])]), _vm._v(" "), _c('button', {
+    staticClass: "modal-close",
+    on: {
+      "click": function($event) {
+        _vm.largeImage = null
+      }
+    }
+  })])])
 },staticRenderFns: []}
 module.exports.render._withStripped = true
 if (false) {
