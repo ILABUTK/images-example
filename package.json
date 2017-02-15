@@ -15,8 +15,10 @@
     "vue": "^2.1.10"
   },
   "dependencies": {
+    "bulma": "^0.3.1",
     "laravel-echo": "^1.2.4",
-    "pusher-js": "^4.0.0",
-    "bulma": "^0.3.1"
+    "macy": "^1.1.1",
+    "masonry-layout": "^4.1.1",
+    "pusher-js": "^4.0.0"
   }
 }

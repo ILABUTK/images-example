@@ -32,11 +32,26 @@ Route::post('/image-upload', function (Request $request) {
   $path = $uploadFile->store('public/images');
   $url = Storage::url($path);
 
+  $filename = pathinfo($path)['filename'].'_prev.jpeg';
+
+  // open an image file
+  $img = Image::make($uploadFile->getRealPath());
+
+  // resize only the width of the image
+  $img->resize(320, null, function ($constraint) {
+        $constraint->aspectRatio();
+    })->encode('jpg');
+
+  // finally we save the image as a new file
+  Storage::put('public/images/'.$filename, $img);
+  $preview_url = Storage::url('public/images/'.$filename);
+
   $image = new UploadedImage;
   $image->path = $url;
   $image->name = $fullName;
-  $image->preview_path = $url;
+  $image->preview_path = $preview_url;
   $image->save();
+
   event(new ImageUploaded($image));
   return response('OK');
 });

@@ -18,10 +18,14 @@
     </head>
     <body>
     <div id="app">
-        <form action="/image-upload" class="dropzone" id="my-dropzone">
-            {{ csrf_field() }}
-        </form>
-        <image-gallery ref="gallery"></image-gallery>        
+        <div class="columns">
+            <form action="/image-upload" class="column is-12 dropzone" id="my-dropzone">
+                {{ csrf_field() }}
+            </form>        
+        </div>
+        
+            <image-gallery ref="gallery"></image-gallery>
+                
     </div>
 <script type="text/javascript" src="{{asset('js/dropzone.js')}}"></script>    
 <script type="text/javascript" src="{{asset('js/app.js')}}"></script>        
@@ -31,8 +35,12 @@ Dropzone.options.myDropzone = {
   paramName: "file", // The name that will be used to transfer the file
   maxFilesize: 8, // MB
   acceptedFiles: "image/*",
-    accept: function(file, done) {
+  accept: function(file, done) {
       done();
+  },
+  success: function(file, response) {
+    setTimeout(() => { this.removeFile(file); }, 1000);
+    return file.previewElement.classList.add("dz-success");
   }
 };
 

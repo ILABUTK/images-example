@@ -1,13 +1,17 @@
 <template>
-  <div class="columns files is-multiline" name="image" is="transition-group">
-      <div v-for="image in images" :key="image.id" class="column is-4-tablet is-3-desktop is-2-widescreen">
+<!-- class="columns files is-mobile is-multiline" -->
+<!-- class="column is-6-mobile is-4-tablet is-3-desktop is-2-widescreen"  -->
+  <div id="macy-container" name="image" is="transition-group">
+      <div v-for="image in images" :key="image.id">
+      <div class="card">
         <a class="file">
-          <div class="image">
-                <img :src="image.path" alt="Image">
-          </div>
+          <figure class="image">
+              <img :src="image.preview_path" :alt=" image.name ">
+          </figure>    
           <div class="name"> {{image.name}} </div>
           <div class="timestamp"> {{image.human_time}} </div>
-        </a>
+        </a>        
+      </div>
       </div>                
   </div>
 </template>
@@ -22,11 +26,31 @@ export default {
     };
   },
   mounted(){
-    window.axios.get('/images').then(response => this.images = response.data)
+    window.axios.get('/images').then(response => this.images = response.data);
+    window.Macy.init({
+      container: '#macy-container',
+      trueOrder: false,
+      waitForImages: false,
+      margin: 24,
+      columns: 6,
+      breakAt: {
+          1200: 5,
+          940: 3,
+          520: 2,
+          400: 1
+        }
+    });   
+  },
+  updated(){
+    window.Macy.onImageLoad(function () {
+      window.Macy.recalculate();
+    });   
   },
   methods: {
     addImage(image){
-      this.images.unshift(image);
+      // this.images.unshift(image);
+      //retrieve data with updated time
+      window.axios.get('/images').then(response => this.images = response.data); 
     }
   }
 }
@@ -43,6 +67,9 @@ export default {
 }
 .image-move {
   transition: transform 0.5s;
-}    
+}
+
+.grid-item { width: 200px; }
+
 </style>
 
