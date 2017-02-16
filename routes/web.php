@@ -29,13 +29,19 @@ Route::get('/images', function (Request $request) {
   }
 });
 
+Route::delete('/images/{image}', function (UploadedImage $image) {
+  Storage::delete([$image->path, $image->preview_path]);
+  $image->delete();
+  return response('OK');
+});
+
 
 Route::post('/image-upload', function (Request $request) {
   $uploadFile = $request->file('file');
   $fullName = $uploadFile->getClientOriginalName();
 
   $path = $uploadFile->store('public/images');
-  $url = Storage::url($path);
+  // $url = Storage::url($path);
 
   $filename = pathinfo($path)['filename'].'_prev.jpeg';
 
@@ -48,13 +54,15 @@ Route::post('/image-upload', function (Request $request) {
   })->encode('jpg');
 
   // finally we save the image as a new file
-  Storage::put('public/images/'.$filename, $img);
-  $preview_url = Storage::url('public/images/'.$filename);
+  $preview_path = 'public/images/'.$filename;
+  Storage::put($preview_path, $img);
+  
+  // $preview_url = Storage::url('public/images/'.$filename);
 
   $image = new UploadedImage;
-  $image->path = $url;
+  $image->path = $path;
   $image->name = $fullName;
-  $image->preview_path = $preview_url;
+  $image->preview_path = $preview_path;
   $image->save();
 
   event(new ImageUploaded($image));

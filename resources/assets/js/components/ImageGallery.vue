@@ -1,35 +1,49 @@
 <template>
 <div>
-  <div id="macy-container" name="image" is="transition-group">
+  <div id="macy-container">
       <div v-for="image in images" :key="image.id">
       <div class="card">
         <a class="file">
           <figure class="image">
-              <img :src="image.preview_path" :alt=" image.name " @click="showLargeImage(image)">
+              <img :src="image.prev_url" :alt=" image.name " @click="showLargeImage(image)">
           </figure>    
           <div class="name"> {{image.name}} </div>
           <div class="timestamp"> {{image.human_time}} </div>
+          <div style="padding-bottom: 15px;">
+            <span class="icon-btn is-pulled-right" @click="deleteImage(image)" >
+              <i class="fa fa-trash"></i>
+            </span>              
+          </div>
+        
         </a>        
       </div>
-      </div>                
+      </div>                      
   </div>
 
   <div id="view-large" class="modal" :class="{'is-active': largeImage != null }">
     <div class="modal-background" @click="largeImage = null"></div>
     <div class="modal-content">
       <p class="image">
-        <img :src="largeImage? largeImage.path : ''">
+        <img :src="largeImage? largeImage.url : ''">
       </p>
     </div>
     <button class="modal-close" @click="largeImage = null"></button>
+  </div>    
+
+  <div v-if="images.length == 0" class="columns">
+  <div class="column has-text-centered">
+     <span class="is-fullwidth is-large">No image yet!</span>
+  </div>
   </div>
 
-  <div v-show="show_button" class="columns" style="padding-top : 40px; padding-bottom : 30px;" @click="loadMoreData()">
+  <div v-show=" show_button" class="columns" style="padding-top : 40px; padding-bottom : 30px;" @click="loadMoreData()">
   <div class="column is-half is-offset-one-quarter ">
       <a class="button is-primary is-fullwidth"
          :class="{'is-disabled': button_disabled}">{{butt_text}}</a>    
   </div>
-  </div>
+  </div>   
+
+
 
 </div>
 
@@ -96,27 +110,31 @@ export default {
                     else {
                       this.butt_text = 'No more images :)';
                       this.button_disabled = true;
-                    }
-                  });
-    }
+                    }});
+    },
+    deleteImage(image){
+      window.axios.delete('/images/'+image.id)
+                  .then(response => {
+                      let index = this.images.indexOf(image);
+                      this.images.splice(index, 1);
+                    });
+    },
   }
 }
 </script>
 
 
 <style>
-.image-enter-active, .image-leave-active {
-  transition: all 0.5s;
-}
-.image-enter, .image-leave-to  {
-  opacity: 0;
-  transform: translateY(10px);
-}
-.image-move {
-  transition: transform 0.5s;
-}
 
 .grid-item { width: 200px; }
+
+.fa-trash{
+   color: gray;
+}
+
+.fa-trash:hover{
+   color: red;
+}
 
 </style>
 
