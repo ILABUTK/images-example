@@ -22,10 +22,10 @@ Route::get('/', function () {
 Route::get('/images', function (Request $request) {
   if($request->has('lastID')){
     $images = UploadedImage::orderBy('id','desc')->where('id', '<',  $request->get('lastID'))->take(15)->get();
-    return response()->json($images);    
+    return response()->json($images);
   } else {
     $images = UploadedImage::orderBy('id','desc')->take(15)->get();
-    return response()->json($images);    
+    return response()->json($images);
   }
 });
 
@@ -56,7 +56,7 @@ Route::post('/image-upload', function (Request $request) {
   // finally we save the image as a new file
   $preview_path = 'public/images/'.$filename;
   Storage::put($preview_path, $img);
-  
+
   // $preview_url = Storage::url('public/images/'.$filename);
 
   $image = new UploadedImage;

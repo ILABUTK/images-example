@@ -6,18 +6,18 @@
         <a class="file">
           <figure class="image">
               <img :src="image.prev_url" :alt=" image.name " @click="showLargeImage(image)">
-          </figure>    
+          </figure>
           <div class="name"> {{image.name}} </div>
           <div class="timestamp"> {{image.human_time}} </div>
           <div style="padding-bottom: 15px;">
             <span class="icon-btn is-pulled-right" @click="deleteImage(image)" >
               <i class="fa fa-trash"></i>
-            </span>              
+            </span>
           </div>
-        
-        </a>        
+
+        </a>
       </div>
-      </div>                      
+      </div>
   </div>
 
   <div id="view-large" class="modal" :class="{'is-active': largeImage != null }">
@@ -28,7 +28,7 @@
       </p>
     </div>
     <button class="modal-close" @click="largeImage = null"></button>
-  </div>    
+  </div>
 
   <div v-if="images.length == 0" class="columns">
   <div class="column has-text-centered">
@@ -39,9 +39,9 @@
   <div v-show=" show_button" class="columns" style="padding-top : 40px; padding-bottom : 30px;" @click="loadMoreData()">
   <div class="column is-half is-offset-one-quarter ">
       <a class="button is-primary is-fullwidth"
-         :class="{'is-disabled': button_disabled}">{{butt_text}}</a>    
+         :class="{'is-disabled': button_disabled}">{{butt_text}}</a>
   </div>
-  </div>   
+  </div>
 
 
 
@@ -86,18 +86,18 @@ export default {
           400: 1
         }
     });
-    setTimeout(() => { this.show_button = true; }, 1000);   
+    setTimeout(() => { this.show_button = true; }, 1000);
   },
   updated(){
     window.Macy.onImageLoad(null,  () => {
       window.Macy.recalculate();
-    });   
+    });
   },
   methods: {
     addImage(image){
       this.images.unshift(image);
       //retrieve data with updated time
-      // window.axios.get('/images').then(response => this.images = response.data); 
+      // window.axios.get('/images').then(response => this.images = response.data);
     },
     showLargeImage(image){
       this.largeImage = image;
@@ -137,4 +137,3 @@ export default {
 }
 
 </style>
-

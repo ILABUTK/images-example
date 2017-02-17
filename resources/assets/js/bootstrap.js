@@ -1,3 +1,4 @@
+import Echo from 'laravel-echo';
 
 window._ = require('lodash');
 
@@ -13,7 +14,7 @@ require('bootstrap-sass');
 
 // window.Masonry = require('masonry-layout');
 
-window.Macy = require('macy')
+window.Macy = require('macy');
 /**
  * Vue is a modern JavaScript library for building interactive web interfaces
  * using reactive data binding and reusable components. Vue's API is clean
@@ -31,8 +32,8 @@ window.Vue = require('vue');
 window.axios = require('axios');
 
 window.axios.defaults.headers.common = {
-    'X-CSRF-TOKEN': window.Laravel.csrfToken,
-    'X-Requested-With': 'XMLHttpRequest'
+  'X-CSRF-TOKEN': window.Laravel.csrfToken,
+  'X-Requested-With': 'XMLHttpRequest',
 };
 
 /**
@@ -41,9 +42,7 @@ window.axios.defaults.headers.common = {
  * allows your team to easily build robust real-time web applications.
  */
 
-import Echo from "laravel-echo"
-
 window.Echo = new Echo({
-    broadcaster: 'pusher',
-    key: 'e5f5ac09c28fc19cfd6e'
+  broadcaster: 'pusher',
+  key: 'e5f5ac09c28fc19cfd6e',
 });

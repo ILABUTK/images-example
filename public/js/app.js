@@ -11193,8 +11193,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
  * building robust, powerful web applications using Vue and Laravel.
  */
 
-__webpack_require__(31);
 
+__webpack_require__(31);
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to
@@ -11210,7 +11210,6 @@ window.app = new Vue({
 });
 
 window.Echo.channel('images').listen('ImageUploaded', function (data) {
-  console.log('received image' + data);
   window.app.$refs.gallery.addImage(data.image);
 });
 
@@ -12173,7 +12172,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     addImage: function addImage(image) {
       this.images.unshift(image);
       //retrieve data with updated time
-      // window.axios.get('/images').then(response => this.images = response.data); 
+      // window.axios.get('/images').then(response => this.images = response.data);
     },
     showLargeImage: function showLargeImage(image) {
       this.largeImage = image;
@@ -12207,6 +12206,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* WEBPACK VAR INJECTION */(function(__webpack_provided_window_dot_jQuery) {Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_laravel_echo__ = __webpack_require__(35);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_laravel_echo___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_laravel_echo__);
+
 
 window._ = __webpack_require__(36);
 
@@ -12249,8 +12249,6 @@ window.axios.defaults.headers.common = {
  * for events that are broadcast by Laravel. Echo and event broadcasting
  * allows your team to easily build robust real-time web applications.
  */
-
-
 
 window.Echo = new __WEBPACK_IMPORTED_MODULE_0_laravel_echo___default.a({
   broadcaster: 'pusher',
