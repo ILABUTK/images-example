@@ -1,7 +1,10 @@
 <?php
 
-use App\Events\ImageUploaded;
+use App\User;
 use App\UploadedImage;
+
+use App\Events\ImageUploaded;
+
 use Illuminate\Http\Request;
 
 /*
@@ -18,6 +21,7 @@ use Illuminate\Http\Request;
 Route::get('/', function () {
   return view('welcome');
 });
+
 
 Route::get('/images', function (Request $request) {
   if($request->has('lastID')){
