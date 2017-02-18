@@ -14,21 +14,21 @@
         window.Laravel = {!! json_encode([
             'csrfToken' => csrf_token(),
         ]) !!};
-    </script>        
+    </script>
     </head>
     <body>
     <div id="app">
         <div class="columns">
-            <form action="/image-upload" class="column is-12 dropzone" id="my-dropzone">
+            <form action="api/image-upload" class="column is-12 dropzone" id="my-dropzone">
                 {{ csrf_field() }}
-            </form>        
+            </form>
         </div>
-        
+
             <image-gallery ref="gallery"></image-gallery>
-                
+
     </div>
-<script type="text/javascript" src="{{asset('js/dropzone.js')}}"></script>    
-<script type="text/javascript" src="{{asset('js/app.js')}}"></script>        
+<script type="text/javascript" src="{{asset('js/dropzone.js')}}"></script>
+<script type="text/javascript" src="{{asset('js/app.js')}}"></script>
 
 <script type="text/javascript">
 Dropzone.options.myDropzone = {
